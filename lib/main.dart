@@ -104,35 +104,88 @@ class _AnaSayfaState extends State<AnaSayfa> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>
           [
-            TextButton(
-              onPressed: ()
-              {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MesajlarSayfasi(mesajlarRepository),
-                ));
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => MesajlarSayfasi(mesajlarRepository),));
                 setState(() {
 
                 });
               },
-              child: Text("${mesajlarRepository.mesajSayisi} Yeni Mesaj"),
+              child: DecoratedBox(
+
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.amberAccent,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Icon(Icons.message,color: Colors.white,size: 40),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                      child: Text("${mesajlarRepository.mesajSayisi} Yeni Mesaj",style: TextStyle(color: Colors.indigo)),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: ()
-              {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => OgrencilerSayfasi(ogrencilerRepository),
-                ));
-              },
-              child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğrenci"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => OgrencilerSayfasi(ogrencilerRepository),
+                  ));
+                },
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.amberAccent,
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Icon(Icons.person_pin_outlined,color: Colors.white,size: 40),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                        child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğrenci",style: TextStyle(color: Colors.indigo)),
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: ()
-              {
+            InkWell(
+              onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => OgretmenlerSayfasi(ogretmenlerRepository),
                 ));
               },
-              child: Text("${ogrencilerRepository.Ogrenciler.length} Öğretmen"),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.amberAccent,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Icon(Icons.account_circle_outlined,color: Colors.white,size: 40),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                      child: Text("${ogrencilerRepository.Ogrenciler.length} Öğretmen",style: TextStyle(color: Colors.indigo)),
+                    ),
+                  ],
+                ),
+              ),
             ),
 
           ],
