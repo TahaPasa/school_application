@@ -9,7 +9,7 @@ import 'pages/ogrenciler_sayfasi.dart';
 import 'pages/ogretmenler_sayfasi.dart';
 
 void main() {
-  runApp(ProviderScope(child: const OgrenciApp()));
+  runApp(const ProviderScope(child: OgrenciApp()));
 }
 
 class OgrenciApp extends StatelessWidget {
@@ -72,21 +72,21 @@ class AnaSayfa extends ConsumerWidget{
 
             ),
             ListTile(
-              leading: const Icon(Icons.circle,color: Colors.teal,),
+              leading: const Icon(Icons.circle,color: Colors.teal,size: 20,),
               title: const Text('Öğrenciler'),
               onTap: () {
 
               },
             ),
             ListTile(
-              leading: const Icon(Icons.circle,color: Colors.teal,),
+              leading: const Icon(Icons.circle,color: Colors.teal,size: 20,),
               title: const Text('Öğretmenler'),
               onTap: () {
 
               },
             ),
             ListTile(
-              leading: const Icon(Icons.circle,color: Colors.teal,),
+              leading: const Icon(Icons.circle,color: Colors.teal,size: 20,),
               title: const Text('Mesajlar'),
               onTap: () {
                 // Update the state of the app.
@@ -108,32 +108,65 @@ class AnaSayfa extends ConsumerWidget{
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MesajlarSayfasi(),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MesajlarSayfasi(),
+                          )
+                        );
+                      },
+                      child: DecoratedBox(
+
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          color: Colors.amberAccent,
+                        ),
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Icon(Icons.message,color: Colors.white,size: 40),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                              child: Text("${ref.watch(YeniMesajSayisiProvider)} Yeni Mesaj",style: const TextStyle(color: Colors.indigo)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const OgrencilerSayfasi(),
+                        ));
+                      },
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          color: Colors.amberAccent,
+                        ),
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Icon(Icons.person_pin_outlined,color: Colors.white,size: 40),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                              child: Text("${ogrencilerRepository.Ogrenciler.length} Öğrenci",style: const TextStyle(color: Colors.indigo)),
                             )
-                          );
-                        },
-                        child: DecoratedBox(
-
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.amberAccent,
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Icon(Icons.message,color: Colors.white,size: 40),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                                child: Text("${ref.watch(YeniMesajSayisiProvider)} Yeni Mesaj",style: TextStyle(color: Colors.indigo)),
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
                       ),
                     ),
@@ -146,69 +179,30 @@ class AnaSayfa extends ConsumerWidget{
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OgrencilerSayfasi(),
-                          ));
-                        },
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.amberAccent,
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Icon(Icons.person_pin_outlined,color: Colors.white,size: 40),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                                child: Text("${ogrencilerRepository.Ogrenciler.length} Öğrenci",style: TextStyle(color: Colors.indigo)),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OgretmenlerSayfasi(),
-                          ));
-                        },
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const OgretmenlerSayfasi(),
+                        ));
+                      },
 
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Colors.amberAccent,
-                          ),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Icon(Icons.account_circle_outlined,color: Colors.white,size: 40),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                                child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğretmen",style: TextStyle(color: Colors.indigo)),
-                              ),
-                            ],
-                          ),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Colors.amberAccent,
+                        ),
+                        child: Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Icon(Icons.account_circle_outlined,color: Colors.white,size: 40),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                              child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğretmen",style: const TextStyle(color: Colors.indigo)),
+                            ),
+                          ],
                         ),
                       ),
                     ),
