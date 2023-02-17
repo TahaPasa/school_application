@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:school_app/repository/mesajlar_repository.dart';
 import 'package:school_app/repository/ogrenciler_repository.dart';
 import 'package:school_app/repository/ogretmenler_repository.dart';
@@ -8,7 +9,7 @@ import 'pages/ogrenciler_sayfasi.dart';
 import 'pages/ogretmenler_sayfasi.dart';
 
 void main() {
-  runApp(const OgrenciApp());
+  runApp(ProviderScope(child: const OgrenciApp()));
 }
 
 class OgrenciApp extends StatelessWidget {
@@ -26,27 +27,23 @@ class OgrenciApp extends StatelessWidget {
   }
 }
 
-class AnaSayfa extends StatefulWidget{
+class AnaSayfa extends ConsumerWidget{
   const AnaSayfa({super.key, required this.title});
 
   final String title;
 
-  @override
-  State<AnaSayfa> createState() => _AnaSayfaState();
-}
 
-class _AnaSayfaState extends State<AnaSayfa> {
-
-  MesajlarRepository mesajlarRepository = MesajlarRepository();
-  OgrencilerRepository ogrencilerRepository = OgrencilerRepository();
-  OgretmenlerRepository ogretmenlerRepository = OgretmenlerRepository();
+  
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ogrencilerRepository  =  ref.watch(ogrencilerProvider);
+    final ogretmenlerRepository = ref.watch(ogretmenlerProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       drawer: Drawer(
         child: ListView(
@@ -107,17 +104,16 @@ class _AnaSayfaState extends State<AnaSayfa> {
           children: <Widget>
           [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 60.0,vertical: 8),
               child: Row(
                 children: [
                   Expanded(
                     child: Container(
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MesajlarSayfasi(mesajlarRepository),));
-                          setState(() {
-
-                          });
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MesajlarSayfasi(),
+                            )
+                          );
                         },
                         child: DecoratedBox(
 
@@ -134,7 +130,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                                child: Text("${mesajlarRepository.mesajSayisi} Yeni Mesaj",style: TextStyle(color: Colors.indigo)),
+                                child: Text("${ref.watch(YeniMesajSayisiProvider)} Yeni Mesaj",style: TextStyle(color: Colors.indigo)),
                               ),
                             ],
                           ),
@@ -146,7 +142,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 8),
               child: Row(
                 children: [
                   Expanded(
@@ -154,7 +150,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OgrencilerSayfasi(ogrencilerRepository),
+                            builder: (context) => OgrencilerSayfasi(),
                           ));
                         },
                         child: DecoratedBox(
@@ -171,7 +167,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                                child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğrenci",style: TextStyle(color: Colors.indigo)),
+                                child: Text("${ogrencilerRepository.Ogrenciler.length} Öğrenci",style: TextStyle(color: Colors.indigo)),
                               )
                             ],
                           ),
@@ -183,7 +179,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 60.0, vertical: 8),
               child: Row(
                 children: [
                   Expanded(
@@ -191,9 +187,10 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       child: InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OgretmenlerSayfasi(ogretmenlerRepository),
+                            builder: (context) => OgretmenlerSayfasi(),
                           ));
                         },
+
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
@@ -208,7 +205,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                                child: Text("${ogrencilerRepository.Ogrenciler.length} Öğretmen",style: TextStyle(color: Colors.indigo)),
+                                child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğretmen",style: TextStyle(color: Colors.indigo)),
                               ),
                             ],
                           ),
