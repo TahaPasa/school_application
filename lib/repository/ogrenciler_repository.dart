@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/ogrenci.dart';
+
 class OgrencilerRepository extends ChangeNotifier{
   final Ogrenciler = [
     Ogrenci("Taha Alp", "Koçyiğit", 20, "Erkek"),
@@ -30,11 +32,3 @@ class OgrencilerRepository extends ChangeNotifier{
 
 final ogrencilerProvider = ChangeNotifierProvider((ref) => OgrencilerRepository());
 
-class Ogrenci{
-  String ad;
-  String soyad;
-  int yas;
-  String cinsiyet;
-
-  Ogrenci(this.ad, this.soyad, this.yas, this.cinsiyet);
-}

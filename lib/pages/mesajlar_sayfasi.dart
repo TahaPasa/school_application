@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:school_app/repository/mesajlar_repository.dart';
 
+import '../models/mesaj.dart';
+
 class MesajlarSayfasi extends ConsumerStatefulWidget {
 
   const MesajlarSayfasi({Key? key}) : super(key: key);

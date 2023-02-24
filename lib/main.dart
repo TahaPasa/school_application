@@ -200,7 +200,7 @@ class AnaSayfa extends ConsumerWidget{
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                              child: Text("${ogretmenlerRepository.Ogretmenler.length} Öğretmen",style: const TextStyle(color: Colors.indigo)),
+                              child: Text("${ogretmenlerRepository.ogretmenler.length} Öğretmen",style: const TextStyle(color: Colors.indigo)),
                             ),
                           ],
                         ),
