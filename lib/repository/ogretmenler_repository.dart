@@ -16,13 +16,10 @@ class OgretmenlerRepository extends ChangeNotifier{
   final DataService dataService;
   OgretmenlerRepository(this.dataService);
 
-  void download()
-  {
+  Future<void> download()
+  async {
 
-    Ogretmen ogretmen = dataService.ogretmenDownload();
-
-
-
+    Ogretmen ogretmen = await dataService.ogretmenDownload();
 
     ogretmenler.add(ogretmen);
     notifyListeners();

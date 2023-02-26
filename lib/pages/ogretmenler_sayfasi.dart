@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:school_app/repository/ogretmenler_repository.dart';
 
 import '../models/ogretmen.dart';
+import 'ogretmen/ogretmen_form.dart';
 
 class OgretmenlerSayfasi extends ConsumerWidget {
 
@@ -31,12 +32,7 @@ class OgretmenlerSayfasi extends ConsumerWidget {
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.download),
-                    onPressed: () {
-                      ref.read(ogretmenlerProvider).download();
-                    },
-                  ),
+                  child: OgretmenindirmeButonu(),
                 )
               ],
             ),
@@ -52,6 +48,57 @@ class OgretmenlerSayfasi extends ConsumerWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        final created = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (context) => OgretmenForm(),));
+        if(created == true){
+          print("öğretmenleri yenile!");
+        }
+      },child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class OgretmenindirmeButonu extends StatefulWidget {
+  const OgretmenindirmeButonu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<OgretmenindirmeButonu> createState() => _OgretmenindirmeButonuState();
+}
+
+class _OgretmenindirmeButonuState extends State<OgretmenindirmeButonu> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        return isLoading ? CircularProgressIndicator(): IconButton(
+          icon: const Icon(Icons.download),
+          onPressed: () async {
+            //TODO Loading
+            //TODO error
+            try{
+
+            setState((){
+              isLoading = true;
+            });
+            await ref.read(ogretmenlerProvider).download();
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(e.toString())),
+              );
+            }
+            finally{
+            setState((){
+              isLoading = false;
+            });
+            }
+          },
+        );
+      }
     );
   }
 }
