@@ -38,22 +38,43 @@ class OgretmenlerSayfasi extends ConsumerWidget {
             ),
           ),
           Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) => OgretmenSatiri(
-                  ogretmenlerRepository.ogretmenler[index],
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  ref.refresh(ogretmenlerListesiProvider);
+                },
+                child: ref.watch(ogretmenlerListesiProvider).when(
+                    data: (data) => ListView.separated(
+                      itemBuilder: (context, index) => OgretmenSatiri(
+                        data[index],
+                      ),
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: data.length,
+                    ),
+                    error: (error, stackTrace) {
+                      return SingleChildScrollView(
+                          child: Text("Hata"),
+                          physics: AlwaysScrollableScrollPhysics(),
+                      );
+                    },
+                    loading: () {
+                      return Center(child: CircularProgressIndicator(),);
+                    },
                 ),
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: ogretmenlerRepository.ogretmenler.length,
               )
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        final created = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (context) => OgretmenForm(),));
-        if(created == true){
-          print("öğretmenleri yenile!");
-        }
-      },child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final created = await Navigator.of(context).push<bool>(MaterialPageRoute(builder: (context) => OgretmenForm(),));
+          if(created == true){
+            // print("öğretmenleri yenile!");
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Öğretmen Eklendi!")),
+            );
+          }
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

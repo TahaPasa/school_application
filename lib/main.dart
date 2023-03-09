@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:school_app/repository/mesajlar_repository.dart';
 import 'package:school_app/repository/ogrenciler_repository.dart';
 import 'package:school_app/repository/ogretmenler_repository.dart';
+import 'package:school_app/utilities/google_sign_in.dart';
 
 import 'pages/mesajlar_sayfasi.dart';
 import 'pages/ogrenciler_sayfasi.dart';
@@ -22,7 +25,55 @@ class OgrenciApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const AnaSayfa(title: 'Öğrenci Ana Sayfa'),
+      home: SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  bool IsFirebaseInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    initalizeFirebase();
+  }
+
+  Future<void> initalizeFirebase() async {
+    await Firebase.initializeApp();
+    setState(() {
+      IsFirebaseInitialized = true;
+    });
+    if(FirebaseAuth.instance.currentUser != null)
+      {
+        anaSayfayaGit();
+      }
+
+  }
+
+  void anaSayfayaGit() {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const AnaSayfa(title: 'Öğrenci Ana Sayfa'),));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: IsFirebaseInitialized? ElevatedButton(
+          onPressed: () async {
+            await signInWithGoogle();
+            anaSayfayaGit();
+          },
+          child: Text("Google sign-in")):CircularProgressIndicator(),
+      ),
     );
   }
 }
@@ -31,11 +82,6 @@ class AnaSayfa extends ConsumerWidget{
   const AnaSayfa({super.key, required this.title});
 
   final String title;
-
-
-  
-
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ogrencilerRepository  =  ref.watch(ogrencilerProvider);
@@ -59,7 +105,8 @@ class AnaSayfa extends ConsumerWidget{
               ),
               child:
               Stack(
-                  children: const [
+                  children:  [
+                    Text(FirebaseAuth.instance.currentUser!.displayName!),
                     Positioned(
                       bottom: 8.0,
                       left: 4.0,
@@ -93,6 +140,15 @@ class AnaSayfa extends ConsumerWidget{
                 // ...
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.circle,color: Colors.teal,size: 20,),
+              title: const Text('Çıkış Yap'),
+              onTap: () async {
+                await SignOutWithGoogle();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SplashScreen(),));
+              },
+            ),
+
           ],
         ),
       ),

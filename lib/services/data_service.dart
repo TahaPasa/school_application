@@ -49,6 +49,20 @@ class DataService{
     }
   }
 
+  Future<List<Ogretmen>> ogretmenleriGetir() async {
+    final response = await http.get(Uri.parse("$baseUrl/teachers"));
+
+    if (response.statusCode == 200) {
+      final l = jsonDecode(response.body);
+      return l.map<Ogretmen>((e) => Ogretmen.fromMap(e)).toList();
+
+    } else {
+
+      throw Exception('Öğretmen indirilemedi ${response.statusCode}');
+    }
+
+  }
+
 
 }
 
